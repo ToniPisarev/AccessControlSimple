@@ -1,20 +1,15 @@
 package com.ray.toni.accesscontrol;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
-import android.nfc.tech.NfcA;
-import android.nfc.tech.NfcB;
-import android.nfc.tech.NfcF;
-import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.IOException;
 
 
@@ -23,31 +18,17 @@ public class MainActivity extends Activity {
     private NfcAdapter myNfcAdapter;
     private TextView myTextView;
     private PendingIntent pendingIntent;
-    private IntentFilter[] mFilters;
-    private String[][] mTechLists;
 
+    @SuppressLint("SetTextI18n")
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // field declarations
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-
-        // set up an intent filter for all tag dispatches
-
-        IntentFilter td = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        mFilters = new IntentFilter[] { td };
-
-        // set up a tech list for all Nfc tags we are looking for
-        mTechLists = new String[][] { new String[] {
-                IsoDep.class.getName(),
-                NfcV.class.getName(),
-                NfcF.class.getName(),
-                NfcA.class.getName(),
-                NfcB.class.getName()
-        } };
-
-        this.myNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        this.myTextView = (TextView) findViewById(R.id.result);
+        myNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        myTextView = (TextView) findViewById(R.id.result);
 
         // check for Nfc support
         if (this.myNfcAdapter == null) {
@@ -93,6 +74,7 @@ public class MainActivity extends Activity {
         return new String(hexChars);
     }
 
+    @SuppressLint("SetTextI18n")
     private void handleTag(Intent intent) {
         if (intent == null) {
             return;
@@ -129,10 +111,10 @@ public class MainActivity extends Activity {
                             try {
                                 result = tag.transceive(CMMD);
                             } catch (IOException e2) {
-                                Toast.makeText(this, "Oops! Something went wrong.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Oops! Something went wrong.", Toast.LENGTH_SHORT).show();
                             }
                             int len = result.length;
-                            if (result[len - 2] == (byte) -112 && result[len - 1] == (byte) 0) {
+                            if (result[len - 2] == (byte) 0x90 && result[len - 1] == (byte) 0) {
                                 byte[] data = new byte[(len - 2)];
                                 System.arraycopy(result, 0, data, 0, len - 2);
                                 this.myTextView.setText(bytesToHexString(data).substring(0, 70));
