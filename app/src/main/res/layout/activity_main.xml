@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    tools:context="com.ray.toni.accesscontrol.MainActivity">
+
+    <ImageView
+        android:id="@+id/event_logo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitStart"
+        android:src="@drawable/boa" />
+
+    <ImageView
+        android:id="@+id/scan"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:background="#000"
+        android:src="@drawable/waves"
+        android:visibility="visible"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Tap to scan"
+        android:textColor="#fff"
+        android:textSize="23sp"
+        android:layout_below="@+id/scan"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
